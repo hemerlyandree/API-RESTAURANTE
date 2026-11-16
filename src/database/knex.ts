@@ -1,5 +1,8 @@
-import { knex as KnexConfig } from "knex"
+// src/database/knex.ts
+import pkg from "knex"
 
 import config from "../../knexfile"
 
-export const knex = KnexConfig(config)
+const { knex: createKnex } = pkg
+
+export const knex = createKnex(config)
