@@ -4,8 +4,8 @@ import { TablesSessionsController } from "@/controlllers/tables-sessions-control
 
 const TablesSessionsRouter = Router()
 
-const tablesSessionsController = new TablesSessionsController 
+const tablesSessionsController = new TablesSessionsController()
 
-TablesSessionsRouter.post("/tables-sessions",tablesSessionsController.create)
+TablesSessionsRouter.post("/",tablesSessionsController.create)
 
 export { TablesSessionsRouter }
