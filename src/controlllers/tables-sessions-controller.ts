@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express"
-import { number, z } from "zod"
+import { z } from "zod"
 import { knex } from "@/database/knex"
-import { TablesSessionsRepository } from "@/database/types/tables-sessions-repository"
-
+import type { TablesSessionsRepository } from "@/database/types/tables-sessions-repository"
+import { AppError } from "@/utils/AppError"
 
 class TablesSessionsController {
   async create(request: Request, response: Response, next: NextFunction) {
@@ -12,6 +12,12 @@ class TablesSessionsController {
       })
 
       const { table_id } = BodySchema.parse(request.body)
+
+      const session = await knex<TablesSessionsRepository>("tables_sessions").where({ table_id }).orderBy("opened_at", "desc").first()
+
+      if(session && !session.closed_at) {
+        throw new AppError("this table is already open")
+      }
 
       await knex<TablesSessionsRepository>("tables_sessions").insert({
         table_id,
